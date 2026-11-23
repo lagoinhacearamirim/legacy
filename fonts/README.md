@@ -1,10 +1,10 @@
 # Fontes do projeto
 
-Adicione os arquivos das fontes nesta pasta, preferencialmente em WOFF2 (ou OTF), usando estes nomes:
+Os arquivos oficiais enviados para a identidade visual estão nesta pasta e são carregados diretamente pelo CSS com `@font-face`. Os nomes originais foram preservados:
 
-- `ModestoCondensed.woff2` ou `ModestoCondensed.otf`
-- `BehoverCollege.woff2` ou `BehoverCollege.otf`
-- `CartographCF-ExtraBold.woff2` ou `CartographCF-ExtraBold.otf`
-- `HelveticaLTStd.woff2` ou `HelveticaLTStd.otf`
+- `Modesto Condensed.ttf` — fonte de títulos e chamadas (`--font-display`)
+- `Behover College.otf` — fonte de destaque e frases expressivas (`--font-accent`)
+- `CartographCF-ExtraBold.ttf` — pesos fortes e elementos de marca (`--font-heavy`)
+- `HelveticaLTStd-BoldCond.otf` — textos curtos, etiquetas e metadados condensados (`--font-condensed`)
 
-Os estilos já possuem fontes de fallback enquanto os arquivos não forem adicionados.
+Os formatos TTF e OTF são compatíveis com navegadores modernos. Não é necessário converter os arquivos para WOFF2 para esta versão do projeto. Caso novos pesos ou estilos sejam enviados, atualize os respectivos blocos `@font-face` em `acamp/styles.css`.

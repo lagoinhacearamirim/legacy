@@ -1,11 +1,11 @@
 # Vetores e identidade visual
 
-Adicione aqui os assets visuais do ACAMP/LEGACY com estes nomes exatos:
+Os assets recebidos estão nesta pasta e já são referenciados pela landing page. Os nomes originais foram preservados:
 
-- `DIA.png`
-- `legacylogo.png`
-- `legacylogo2.png`
-- `STICKER.png`
-- `LEGACY(TITLE).png`
+- `DIA.png` — faixa diagonal vermelha usada como elemento gráfico
+- `legacylogo.png` — logomarca LEGACY branca
+- `legacylogo2.png` — logomarca LEGACY preta
+- `STICKER.png` — adesivo circular de identidade visual
+- `LEGACY(TITLE).png` — composição do título LEGACY sobre a faixa vermelha
 
-Os caminhos já estão configurados na landing page. Se os arquivos forem enviados com outros nomes, será necessário atualizar as referências em `acamp/index.html`.
+As referências no HTML usam esses nomes exatamente. Evite renomeá-los sem atualizar os caminhos em `acamp/index.html`.
