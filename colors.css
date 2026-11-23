@@ -1,0 +1,28 @@
+:root {
+  /* Paleta central do projeto LEGACY / ACAMP */
+  --color-ink: #171816;
+  --color-ink-soft: #242723;
+  --color-ink-muted: #565b52;
+  --color-paper: #f3f0e8;
+  --color-paper-bright: #fffdf8;
+  --color-paper-deep: #e8e2d5;
+  --color-red: #ed4038;
+  --color-red-deep: #b52b2c;
+  --color-red-dark: #781f23;
+  --color-olive: #c3c8a7;
+  --color-moss: #7d8765;
+  --color-sand: #d9c7a7;
+  --color-white: #ffffff;
+  --color-black: #080908;
+
+  --color-text: var(--color-ink);
+  --color-text-inverse: var(--color-paper-bright);
+  --color-surface: var(--color-paper-bright);
+  --color-surface-muted: var(--color-paper-deep);
+  --color-accent: var(--color-red);
+  --color-border: rgba(23, 24, 22, 0.12);
+  --color-glass: rgba(255, 253, 248, 0.12);
+  --color-glass-border: rgba(255, 255, 255, 0.2);
+
+  color-scheme: light;
+}

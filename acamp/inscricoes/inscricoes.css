@@ -1,0 +1,52 @@
+.registration-page { min-height: 100vh; color: var(--color-paper-bright); background: var(--color-ink); }
+.registration-shell {
+  position: relative; min-height: 100vh; display: grid; place-items: center;
+  overflow: hidden; padding: 100px 22px;
+  background:
+    radial-gradient(ellipse at 80% 20%, rgba(181,43,44,.34), transparent 37%),
+    radial-gradient(ellipse at 15% 85%, rgba(125,135,101,.2), transparent 40%),
+    linear-gradient(135deg, #171816, #242723);
+}
+.registration-shell::before, .registration-shell::after {
+  content: ""; position: absolute; border: 1px solid rgba(255,255,255,.07); border-radius: 50%; pointer-events: none;
+}
+.registration-shell::before { width: 680px; height: 680px; right: -280px; top: -290px; }
+.registration-shell::after { width: 470px; height: 470px; left: -220px; bottom: -260px; }
+.registration-brand {
+  position: absolute; top: 30px; left: clamp(22px, 6vw, 96px);
+  color: var(--color-paper-bright); font: 800 13px/1 var(--font-heavy); letter-spacing: .16em;
+}
+.registration-brand small { color: rgba(255,255,255,.45); font: 700 9px/1 var(--font-body); letter-spacing: .13em; }
+.registration-card {
+  position: relative; width: min(100%, 720px); padding: clamp(30px, 6vw, 68px);
+  border-radius: 10px; color: var(--color-paper-bright);
+  background: rgba(255,253,248,.08); border-color: rgba(255,255,255,.16);
+  box-shadow: 0 28px 100px rgba(0,0,0,.24);
+}
+.registration-index, .registration-status, .registration-footer {
+  display: flex; align-items: center; gap: 12px; font-size: 9px; font-weight: 800; letter-spacing: .16em;
+}
+.registration-index { color: rgba(255,255,255,.5); }
+.registration-index i { width: 5px; height: 5px; border-radius: 50%; background: var(--color-red); }
+.registration-status { margin: 55px 0 16px; color: var(--color-red); }
+.registration-card h1 {
+  margin: 0; font: 400 clamp(58px, 10vw, 100px)/.84 var(--font-display); letter-spacing: -.025em;
+}
+.registration-card h1 em { color: var(--color-red); font-family: var(--font-accent); font-style: normal; }
+.registration-copy { max-width: 470px; margin: 30px 0; color: rgba(255,255,255,.64); font-size: 15px; line-height: 1.7; }
+.registration-footer {
+  justify-content: space-between; margin-top: 48px; padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.15); color: rgba(255,255,255,.4); font-size: 8px;
+}
+.registration-side-note {
+  position: absolute; right: 20px; bottom: 24px; writing-mode: vertical-rl;
+  color: rgba(255,255,255,.28); font-size: 8px; font-weight: 800; letter-spacing: .2em;
+}
+@media (max-width: 520px) {
+  .registration-shell { padding: 92px 16px 70px; }
+  .registration-card { padding: 30px 23px; }
+  .registration-status { margin-top: 42px; }
+  .registration-copy { font-size: 13px; }
+  .registration-footer { align-items: flex-start; flex-direction: column; gap: 9px; }
+  .registration-side-note { display: none; }
+}
