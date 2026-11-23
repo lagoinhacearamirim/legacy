@@ -114,14 +114,14 @@
   let previousFocus = null;
 
   function parseTestimonials(source) {
-    const cleanSource = source.replace(/<!--[\\s\\S]*?-->/g, "").trim();
+    const cleanSource = source.replace(/<!--[\s\S]*?-->/g, "").trim();
     if (!cleanSource) return [];
 
-    return cleanSource.split(/^----+\\s*$/m).map((block) => {
-      const heading = block.match(/^#\\s+(.+)$/m);
-      const quoteLines = Array.from(block.matchAll(/^>\\s?(.*)$/gm), (match) => match[1]);
-      const imageMatch = block.match(/!?\\[([^\\]]*)\\]\\s*\\\\?\\(([^)]+)\\)/);
-      const quote = quoteLines.join("\\n").trim();
+    return cleanSource.split(/^----+\s*$/m).map((block) => {
+      const heading = block.match(/^#\s+(.+)$/m);
+      const quoteLines = Array.from(block.matchAll(/^>\s?(.*)$/gm), (match) => match[1]);
+      const imageMatch = block.match(/!?\[([^\]]*)\]\s*\\?\(([^)]+)\)/);
+      const quote = quoteLines.join("\n").trim();
       if (!heading || !quote) return null;
 
       let imageUrl = "";
@@ -154,6 +154,7 @@
     testimonialEmptyNote.hidden = hasTestimonials;
 
     if (item && item.imageUrl) {
+      testimonialImage.onerror = () => { testimonialImageWrap.hidden = true; };
       testimonialImage.src = item.imageUrl;
       testimonialImage.alt = item.imageAlt || ("Foto de " + item.name);
       testimonialImageWrap.hidden = false;
@@ -218,6 +219,7 @@
       .then((source) => {
         testimonials = parseTestimonials(source);
         testimonialIndex = 0;
+        if (testimonialModal.classList.contains("is-open")) renderTestimonial();
       })
       .catch(() => {
         testimonials = [];

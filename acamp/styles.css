@@ -731,3 +731,10 @@ body.testimonials-locked { overflow: hidden; }
   .testimonials-modal { padding: 10px; }
   .testimonials-dialog { padding: 23px 17px 17px; }
 }
+
+/* Ajuste de largura quando o depoimento não possui fotografia */
+.testimonial-image-wrap[hidden] + .testimonial-copy {
+  grid-column: 1 / -1;
+  width: min(100%, 760px);
+  margin: 0 auto;
+}
