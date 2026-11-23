@@ -70,7 +70,8 @@
         const image = document.createElement("img");
         image.src = photo.src;
         image.alt = photo.alt || "Registro do último Acamp";
-        image.loading = index < 2 ? "eager" : "lazy";\n        if (index === 0) image.fetchPriority = "high";
+        image.loading = index < 2 ? "eager" : "lazy";
+        if (index === 0) image.fetchPriority = "high";
         image.decoding = "async";
         image.addEventListener("error", () => image.remove(), { once: true });
 
