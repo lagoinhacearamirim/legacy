@@ -1,0 +1,20 @@
+<!--
+ARQUIVO DE DEPOIMENTOS — ACAMP 2027 / LEGACY
+
+Adicione um depoimento por bloco e separe os blocos com uma linha contendo quatro hífens (----).
+
+Formato:
+
+# FULANO DE TAL
+
+> "Depoimento aqui."
+
+![Descrição da imagem](https://link-da-imagem.jpg)
+
+----
+
+A imagem é opcional. Também são aceitos [Texto alternativo](https://link-da-imagem.jpg)
+e a forma [Texto alternativo]\(https://link-da-imagem.jpg).
+O título com # e pelo menos uma linha iniciada por > são necessários.
+O arquivo é carregado automaticamente pelo modal da landing page.
+-->
