@@ -40,6 +40,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+html, body { max-width: 100%; overflow-x: clip; }
 body {
   margin: 0;
   background: var(--color-paper);
@@ -259,7 +260,7 @@ button, a { font: inherit; }
 .about-note p { margin: 0; color: var(--color-ink); font-size: 13px; line-height: 1.5; }
 .note-symbol { color: var(--color-red); font-size: 21px; }
 .about-bottom-mark {
-  position: absolute; right: -12px; bottom: 50px; color: rgba(23,24,22,.035);
+  position: absolute; right: -12px; bottom: 50px; color: rgba(23,24,22,.13);
   font: 400 clamp(45px, 9vw, 128px)/.8 var(--font-display); white-space: nowrap; pointer-events: none;
 }
 
@@ -287,17 +288,18 @@ button, a { font: inherit; }
 .included-heading .eyebrow { grid-column: 1 / -1; margin-bottom: 2px; }
 .included-heading h2 { font-size: clamp(66px, 8vw, 106px); }
 .included-heading > p:last-child { max-width: 330px; justify-self: end; margin: 0 0 8px; color: var(--color-ink-muted); line-height: 1.65; }
-.included-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 56px; }
+.included-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 56px; }
 .included-card {
-  position: relative; display: flex; align-items: flex-start; gap: 22px;
+  min-width: 0; position: relative; display: flex; align-items: flex-start; gap: 22px;
   min-height: 166px; padding: 28px; border-radius: 7px;
   transition: transform .35s var(--ease-out), box-shadow .35s ease, border-color .35s ease;
 }
 .included-card:hover { transform: translateY(-5px); box-shadow: 0 22px 55px rgba(47,42,31,.1); border-color: rgba(237,64,56,.26); }
-.included-icon { flex: 0 0 36px; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; color: var(--color-red); background: rgba(237,64,56,.09); font: 800 10px/1 var(--font-heavy); }
+.included-icon { flex: 0 0 42px; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; color: var(--color-red); background: rgba(237,64,56,.09); font-size: 19px; }
+.included-icon .material-symbols-outlined { font-size: 23px; line-height: 1; font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24; }
 .included-card h3 { margin: 2px 0 8px; font-size: 17px; }
+.included-card > div { min-width: 0; }
 .included-card p { max-width: 340px; margin: 0; color: var(--color-ink-muted); font-size: 13px; line-height: 1.6; }
-.included-arrow { margin-left: auto; color: var(--color-red); font-size: 18px; }
 
 .stay-section { display: grid; grid-template-columns: 1fr 1fr; min-height: 630px; background: var(--color-ink); color: var(--color-paper-bright); }
 .stay-photo-wrap { position: relative; min-height: 630px; padding: 70px 8% 70px var(--page-gutter); }
@@ -446,7 +448,7 @@ button, a { font: inherit; }
   .included-heading { display: block; }
   .included-heading h2 { font-size: clamp(66px, 14vw, 94px); }
   .included-heading > p:last-child { max-width: 330px; margin: 24px 0 0 auto; }
-  .included-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 36px; }
+  .included-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 36px; }
   .included-card { min-height: 130px; padding: 22px 18px; gap: 14px; }
   .included-card h3 { font-size: 16px; }
   .included-card p { font-size: 12px; }
