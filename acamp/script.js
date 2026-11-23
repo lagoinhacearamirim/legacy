@@ -27,17 +27,18 @@
   const finalCta = document.querySelector(".final-cta");
 
   if (floatingCta && ctaOrigin && finalCta && "IntersectionObserver" in window) {
-    let originIsVisible = true;
+    let originHasPassed = false;
     let finalIsVisible = false;
 
     const updateFloatingCta = () => {
-      const shouldFloat = !originIsVisible && !finalIsVisible;
+      const shouldFloat = originHasPassed && !finalIsVisible;
       floatingCta.classList.toggle("is-floating", shouldFloat);
       floatingCta.classList.toggle("is-hidden", finalIsVisible);
     };
 
     const originObserver = new IntersectionObserver((entries) => {
-      originIsVisible = entries[0].isIntersecting;
+      const entry = entries[0];
+      originHasPassed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
       updateFloatingCta();
     }, { threshold: 0.08 });
 
@@ -74,7 +75,9 @@
         image.addEventListener("error", () => image.remove(), { once: true });
 
         const placeholder = slot.querySelector(".photo-placeholder");
-        if (placeholder) placeholder.hidden = true;
+        image.addEventListener("load", () => {
+          if (placeholder) placeholder.hidden = true;
+        }, { once: true });
         slot.appendChild(image);
 
         if (photo.caption) {
