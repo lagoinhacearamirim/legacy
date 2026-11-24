@@ -1,51 +1,47 @@
 [
   {
-    "src": "https://images.unsplash.com/photo-1758272959885-4e656ec2df61?auto=format&fit=crop&w=1800&q=85",
-    "alt": "Imagem ilustrativa de amigos reunidos ao redor de uma fogueira em um acampamento na floresta",
-    "caption": "Imagem ilustrativa · Unsplash / Vitaly Gariev",
-    "credit": "Vitaly Gariev",
-    "sourceUrl": "https://unsplash.com/photos/friends-gathered-around-a-campfire-in-a-forest-L4FNsx6rI4I"
+    "src": "../acampPics/grupo.jpeg",
+    "alt": "Participantes reunidos em uma foto coletiva à noite no Acamp anterior.",
+    "caption": "UMA FAMÍLIA, MUITAS HISTÓRIAS"
   },
   {
-    "src": "https://images.unsplash.com/photo-1744943776320-e66046ce4cb4?auto=format&fit=crop&w=1200&q=85",
-    "alt": "Imagem ilustrativa de amigos reunidos diante do mar durante o pôr do sol",
-    "caption": "Imagem ilustrativa · Unsplash / Zoshua Colah",
-    "credit": "Zoshua Colah",
-    "sourceUrl": "https://unsplash.com/photos/friends-enjoy-the-sunset-view-by-the-ocean-mtGq7nGeU4A"
+    "src": "../acampPics/meninogincanasorriso.jpeg",
+    "alt": "Participante sorrindo com adereços da equipe durante a gincana.",
+    "caption": "ALEGRIA QUE CONTAGIA"
   },
   {
-    "src": "https://images.unsplash.com/photo-1758272960256-45397872790b?auto=format&fit=crop&w=1500&q=85",
-    "alt": "Imagem ilustrativa de um grupo de amigos reunido ao redor de uma fogueira ao ar livre",
-    "caption": "Imagem ilustrativa · Unsplash / Vitaly Gariev",
-    "credit": "Vitaly Gariev",
-    "sourceUrl": "https://unsplash.com/photos/friends-gathered-around-campfire-by-a-lake-0aI54kAjWP8"
+    "src": "../acampPics/gincana.jpeg",
+    "alt": "Registro vertical com diferentes momentos da gincana no Acamp anterior.",
+    "caption": "GINCANA · ACAMP LEGACY"
   },
   {
-    "src": "https://images.unsplash.com/photo-1759770264441-e9d493bd6a35?auto=format&fit=crop&w=1800&q=85",
-    "alt": "Imagem ilustrativa de jovens reunidos em uma atividade e conversa ao ar livre",
-    "caption": "Imagem ilustrativa · Unsplash / Illia Horokhovsky",
-    "credit": "Illia Horokhovsky",
-    "sourceUrl": "https://unsplash.com/photos/group-of-young-people-gathered-outdoors-tp_t3byVs8A"
+    "src": "../acampPics/meninasorrindo.jpeg",
+    "alt": "Participante sorrindo durante uma atividade da equipe no Acamp anterior.",
+    "caption": "ENCONTROS E ALEGRIA"
   },
   {
-    "src": "https://images.unsplash.com/photo-1697440991713-e3ea2fe0d827?auto=format&fit=crop&w=1200&q=85",
-    "alt": "Imagem ilustrativa de pessoas caminhando juntas pela praia durante o pôr do sol",
-    "caption": "Imagem ilustrativa · Unsplash / Sophie Peng",
-    "credit": "Sophie Peng",
-    "sourceUrl": "https://unsplash.com/photos/a-group-of-people-walking-along-a-beach-at-sunset-qpd6qDLpIJI"
+    "src": "../acampPics/meninogincanaguerra.jpeg",
+    "alt": "Participante com pintura de equipe no rosto durante a gincana.",
+    "caption": "ESPÍRITO DE EQUIPE"
   },
   {
-    "src": "https://images.unsplash.com/photo-1759050429677-52307a5b6ec1?auto=format&fit=crop&w=1200&q=85",
-    "alt": "Imagem ilustrativa de pessoas aproveitando a área da piscina de um resort tropical",
-    "caption": "Imagem ilustrativa · Unsplash / Johan Mouchet",
-    "credit": "Johan Mouchet",
-    "sourceUrl": "https://unsplash.com/photos/people-relaxing-by-a-resort-swimming-pool-with-lounge-chairs-Z0n3yfPM2lI"
+    "src": "../acampPics/lendoabiblia.jpeg",
+    "alt": "Participantes acompanhando a leitura da Bíblia durante um momento de culto no Acamp anterior.",
+    "caption": "FÉ QUE NOS MOVE"
   },
   {
-    "src": "https://images.unsplash.com/photo-1757197190180-38f24fb27745?auto=format&fit=crop&w=1800&q=85",
-    "alt": "Imagem ilustrativa de pessoas aproveitando a piscina de um resort próximo à praia",
-    "caption": "Imagem ilustrativa · Unsplash / Ginabell Andujar",
-    "credit": "Ginabell Andujar",
-    "sourceUrl": "https://unsplash.com/photos/people-swimming-and-relaxing-at-a-tropical-beach-resort-YUCuk418rHU"
+    "src": "../acampPics/chale.jpeg",
+    "alt": "Chalé da Pousada Dunamis com varanda e rede.",
+    "caption": "DESCANSO NA DUNAMIS"
+  },
+  {
+    "src": "../acampPics/sinuca.jpeg",
+    "alt": "Participante jogando sinuca na área de lazer da Pousada Dunamis.",
+    "caption": "LAZER NA POUSADA"
+  },
+  {
+    "src": "../acampPics/coqueiros.jpeg",
+    "alt": "Caminho de entrada da Pousada Dunamis com coqueiros iluminados à noite.",
+    "caption": "CHEGANDO À DUNAMIS"
   }
 ]

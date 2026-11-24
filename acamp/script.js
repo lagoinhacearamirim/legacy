@@ -93,4 +93,60 @@
       // Sem fotos cadastradas, os cartões gráficos permanecem como fallback.
     });
 
+  // Player próprio do Vimeo: o iframe não exibe controles nem identidade visual da plataforma.
+  // A reprodução automática é silenciosa; o botão central é o único controle visível.
+  const videoFrame = document.querySelector("#legacy-vimeo-player");
+  const videoShell = document.querySelector(".stories-video");
+  const videoToggle = document.querySelector(".stories-video-toggle");
+
+  if (videoFrame && videoShell && videoToggle && window.Vimeo && window.Vimeo.Player) {
+    const player = new window.Vimeo.Player(videoFrame);
+    let userPaused = false;
+
+    const setVideoState = (playing) => {
+      videoToggle.classList.toggle("is-playing", playing);
+      videoToggle.classList.toggle("is-paused", !playing);
+      videoToggle.setAttribute("aria-pressed", String(playing));
+      videoToggle.setAttribute("aria-label", playing ? "Pausar vídeo" : "Reproduzir vídeo");
+      const icon = videoToggle.querySelector(".material-symbols-outlined");
+      if (icon) icon.textContent = playing ? "pause" : "play_arrow";
+    };
+
+    player.on("play", () => setVideoState(true));
+    player.on("pause", () => setVideoState(false));
+    player.on("ended", () => setVideoState(false));
+    player.on("error", () => setVideoState(false));
+
+    videoToggle.addEventListener("click", async () => {
+      try {
+        const paused = await player.getPaused();
+        if (paused) {
+          userPaused = false;
+          await player.play();
+        } else {
+          userPaused = true;
+          await player.pause();
+        }
+      } catch (error) {
+        setVideoState(false);
+      }
+    });
+
+    if ("IntersectionObserver" in window) {
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.4;
+          if (isVisible && !userPaused) {
+            player.play().catch(() => setVideoState(false));
+          } else if (!isVisible) {
+            player.pause().catch(() => {});
+          }
+        });
+      }, { threshold: [0, 0.4, 0.75] });
+      videoObserver.observe(videoShell);
+    } else {
+      player.play().catch(() => setVideoState(false));
+    }
+  }
+
 })();

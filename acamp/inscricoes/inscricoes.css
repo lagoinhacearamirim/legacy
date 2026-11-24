@@ -50,3 +50,28 @@
   .registration-footer { align-items: flex-start; flex-direction: column; gap: 9px; }
   .registration-side-note { display: none; }
 }
+
+
+.registration-deadline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: fit-content;
+  margin: 28px 0 30px;
+  padding: 15px 18px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-left: 3px solid var(--color-red);
+  border-radius: 4px;
+  background: rgba(255,255,255,.055);
+}
+.registration-deadline span {
+  color: rgba(255,255,255,.45);
+  font: 800 8px/1 var(--font-condensed);
+  letter-spacing: .18em;
+}
+.registration-deadline strong {
+  color: var(--color-paper-bright);
+  font: 400 27px/1 var(--font-display);
+  letter-spacing: .04em;
+}
+.registration-copy strong { color: var(--color-paper-bright); }

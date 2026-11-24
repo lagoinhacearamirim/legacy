@@ -655,3 +655,147 @@ button, a { font: inherit; }
   .stories-copy > p:not(.eyebrow) { font-size: 13px; }
   .stories-reel .instagram-media { min-width: 0 !important; }
 }
+
+
+/* Vídeo Vimeo sem interface da plataforma: o botão central é o único controle. */
+.stories-video {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 540px;
+  min-width: 0;
+  aspect-ratio: 16 / 9;
+  justify-self: end;
+  overflow: hidden;
+  border: 1px solid rgba(23,24,22,.16);
+  border-radius: 8px;
+  background: #111;
+  box-shadow: 0 24px 65px rgba(23,24,22,.2);
+}
+.stories-video iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: none;
+}
+.stories-video-toggle {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  color: #fff;
+  background: transparent;
+  cursor: pointer;
+}
+.stories-video-toggle .material-symbols-outlined {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(23,24,22,.68);
+  box-shadow: 0 6px 24px rgba(0,0,0,.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 30px;
+  opacity: 0;
+  transform: scale(.92);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.stories-video-toggle.is-paused .material-symbols-outlined,
+.stories-video-toggle.is-playing:hover .material-symbols-outlined,
+.stories-video-toggle.is-playing:focus-visible .material-symbols-outlined {
+  opacity: 1;
+  transform: scale(1);
+}
+.stories-video-toggle:focus-visible {
+  outline: 3px solid var(--color-red);
+  outline-offset: -5px;
+}
+.stories-video-toggle:active .material-symbols-outlined { transform: scale(.94); }
+
+/* Organização das fotos reais do acampamento. */
+@media (min-width: 761px) {
+  .memory-photo-last { grid-column: 3; grid-row: 1 / span 2; }
+}
+.included-card > div { flex: 1 1 auto; }
+.included-photo {
+  flex: 0 0 148px;
+  width: 148px;
+  height: 112px;
+  min-height: 112px;
+  align-self: center;
+  border-radius: 5px;
+}
+.included-photo .photo-placeholder { padding: 10px; }
+.included-photo .placeholder-copy { font-size: 17px; }
+.included-photo .photo-caption {
+  right: 7px;
+  bottom: 6px;
+  left: 7px;
+  font-size: 6px;
+  letter-spacing: .07em;
+}
+.stay-photo-secondary {
+  position: absolute;
+  z-index: 3;
+  top: 112px;
+  right: 7%;
+  width: min(36%, 218px);
+  height: auto;
+  aspect-ratio: 1;
+  border: 7px solid var(--color-ink);
+  box-shadow: 0 18px 42px rgba(0,0,0,.35);
+  transform: rotate(4deg);
+}
+.stay-photo-secondary .photo-placeholder { padding: 10px; }
+.stay-photo-secondary .placeholder-copy { font-size: 20px; }
+.stay-photo-secondary .photo-caption { display: none; }
+
+.is-registration-closed { cursor: pointer; }
+.price-link.is-registration-closed { color: var(--color-red-deep); }
+.registration-closed-section .final-cta-bottom p { max-width: 520px; }
+
+@media (max-width: 900px) {
+  .stories-video { max-width: 500px; }
+}
+@media (max-width: 760px) {
+  .stories-video { width: min(100%, 540px); justify-self: center; }
+  .included-photo {
+    flex-basis: 116px;
+    width: 116px;
+    height: 94px;
+    min-height: 94px;
+  }
+  .included-photo .placeholder-copy { font-size: 14px; }
+  .stay-photo-secondary {
+    top: auto;
+    right: calc(var(--page-gutter) + 18px);
+    bottom: 44px;
+    width: 36%;
+    border-width: 5px;
+  }
+}
+@media (max-width: 420px) {
+  .included-photo {
+    flex-basis: 98px;
+    width: 98px;
+    height: 88px;
+    min-height: 88px;
+  }
+  .included-photo .photo-caption { display: none; }
+  .stories-video-toggle .material-symbols-outlined {
+    width: 52px;
+    height: 52px;
+    font-size: 27px;
+  }
+}
