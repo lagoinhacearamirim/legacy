@@ -93,8 +93,8 @@
       // Sem fotos cadastradas, os cartões gráficos permanecem como fallback.
     });
 
-  // Player próprio do Vimeo: o iframe não exibe controles nem identidade visual da plataforma.
-  // A reprodução automática é silenciosa; o botão central é o único controle visível.
+  // Player Vimeo sem interface: solicitamos autoplay com áudio e controlamos o som
+  // pelo SDK. O primeiro toque no vídeo também tenta iniciar/retomar com volume ligado.
   const videoFrame = document.querySelector("#legacy-vimeo-player");
   const videoShell = document.querySelector(".stories-video");
   const videoToggle = document.querySelector(".stories-video-toggle");
@@ -102,6 +102,10 @@
   if (videoFrame && videoShell && videoToggle && window.Vimeo && window.Vimeo.Player) {
     const player = new window.Vimeo.Player(videoFrame);
     let userPaused = false;
+
+    // Solicita volume máximo assim que o player estiver pronto.
+    // O navegador pode exigir interação antes de liberar autoplay com áudio.
+    player.ready().then(() => player.setVolume(1)).catch(() => {});
 
     const setVideoState = (playing) => {
       videoToggle.classList.toggle("is-playing", playing);
@@ -122,7 +126,8 @@
         const paused = await player.getPaused();
         if (paused) {
           userPaused = false;
-          await player.play();
+          // Executa volume e play durante o mesmo gesto do usuário.
+          await Promise.all([player.setVolume(1), player.play()]);
         } else {
           userPaused = true;
           await player.pause();
@@ -137,7 +142,8 @@
         entries.forEach((entry) => {
           const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.4;
           if (isVisible && !userPaused) {
-            player.play().catch(() => setVideoState(false));
+            Promise.all([player.setVolume(1), player.play()])
+              .catch(() => setVideoState(false));
           } else if (!isVisible) {
             player.pause().catch(() => {});
           }
@@ -145,7 +151,8 @@
       }, { threshold: [0, 0.4, 0.75] });
       videoObserver.observe(videoShell);
     } else {
-      player.play().catch(() => setVideoState(false));
+      Promise.all([player.setVolume(1), player.play()])
+        .catch(() => setVideoState(false));
     }
   }
 
