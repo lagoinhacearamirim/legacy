@@ -1,11 +1,11 @@
 const API_URL="https://pmbzwbbofczahnckgjcq.supabase.co";
 const PUBLIC_KEY="sb_publishable_N-BCEx_6Rqozppa8rrhKJQ_2dJMcKuu";
 const $=selector=>document.querySelector(selector);
-const digits=value=>String(value||"").replace(/\\D/g,"");
+const digits=value=>String(value||"").replace(/\D/g,"");
 
 function validCpf(raw){
  const cpf=digits(raw);
- if(cpf.length!==11||/^(\\d)\\1{10}$/.test(cpf))return false;
+ if(cpf.length!==11||/^(\d)\1{10}$/.test(cpf))return false;
  const calc=(base,factor)=>{
   let sum=0;
   for(const digit of base)sum+=Number(digit)*factor--;
@@ -20,7 +20,7 @@ function currency(cents){
 function date(value){
  if(!value)return "—";
  const raw=String(value);
- if(/^\\d{4}-\\d{2}-\\d{2}$/.test(raw)){
+ if(/^\d{4}-\d{2}-\d{2}$/.test(raw)){
   const [year,month,day]=raw.split("-").map(Number);
   return new Date(year,month-1,day).toLocaleDateString("pt-BR");
  }
@@ -49,7 +49,7 @@ function renderResult(data){
  const inscription=data.inscricao;
  const summary=data.resumo||{total:0,pagas:0,pendentes:0};
  const isCarnet=inscription.metodo_pagamento==="carne";
- const firstName=String(inscription.nome_completo||"participante").trim().split(/\\s+/)[0];
+ const firstName=String(inscription.nome_completo||"participante").trim().split(/\s+/)[0];
  $("#participant-first-name").textContent=firstName;
  $("#participant-name").textContent=inscription.nome_completo||"—";
  $("#registration-code").textContent=inscription.codigo_ingresso||"—";
@@ -116,9 +116,9 @@ async function callLookup(cpf){
 
 $("#lookup-cpf").addEventListener("input",event=>{
  let value=digits(event.target.value).slice(0,11);
- value=value.replace(/(\\d{3})(\\d)/,"$1.$2")
-  .replace(/(\\d{3})(\\d)/,"$1.$2")
-  .replace(/(\\d{3})(\\d{1,2})$/,"$1-$2");
+ value=value.replace(/(\d{3})(\d)/,"$1.$2")
+  .replace(/(\d{3})(\d)/,"$1.$2")
+  .replace(/(\d{3})(\d{1,2})$/,"$1-$2");
  event.target.value=value;
 });
 $("#lookup-form").addEventListener("submit",async event=>{
