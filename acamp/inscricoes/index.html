@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#171816"><meta name="description" content="Inscreva-se no ACAMP 2027 da Legacy."><title>Inscrições — ACAMP 2027</title><link rel="stylesheet" href="../../colors.css"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="./inscricoes.css"></head>
+<body class="registration-page"><main class="registration-shell">
+<a class="registration-brand" href="../"><span>LEGACY</span><small> / ACAMP 2027</small></a>
+<section class="registration-card glass-panel" id="registration-panel">
+<div class="wizard-top"><span class="registration-index">ACAMP 2027 <i></i> INSCRIÇÕES</span><span class="wizard-deadline">PRAZO ATÉ 10/12/2026</span></div>
+<div class="wizard-progress"><span class="progress-track"><i id="progress-bar"></i></span><span id="progress-label">ETAPA 01 DE 04</span></div>
+<form id="registration-form" novalidate>
+<section class="wizard-step active" data-step="1">
+<p class="registration-status">VAMOS COMEÇAR</p><h1>Antes de seguirmos,<br><em>responda:</em></h1><p class="step-description">Precisamos dessa informação para organizar a experiência de todos no Acamp.</p>
+<fieldset class="form-fieldset"><legend>Gênero</legend><div class="choice-grid two-columns">
+<label class="choice-card"><input type="radio" name="genero" value="M"><span>Masculino</span></label>
+<label class="choice-card"><input type="radio" name="genero" value="F"><span>Feminino</span></label>
+<label class="choice-card"><input type="radio" name="genero" value="Outro"><span>Outro</span></label>
+<label class="choice-card"><input type="radio" name="genero" value="Prefiro não informar"><span>Prefiro não informar</span></label>
+</div></fieldset></section>
+
+<section class="wizard-step" data-step="2" hidden>
+<p class="registration-status">SOBRE VOCÊ</p><h1><span id="greeting-name">Olá, você!</span><br><em><span id="greeting-ready">Pronto(a)</span> pro Acamp?</em></h1>
+<p class="step-description">Vamos prosseguir com algumas informações necessárias para garantir a segurança de todos nós.</p>
+<div class="form-grid">
+<label class="field full-width">Nome completo<input name="nome_completo" id="nome-completo" autocomplete="name" maxlength="160" placeholder="Seu nome e sobrenome"></label>
+<label class="field">Data de nascimento<input name="data_nascimento" type="date" autocomplete="bday"></label>
+<label class="field">CPF<input name="cpf" id="cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00"></label>
+<label class="field">Telefone<input name="telefone" id="telefone" type="tel" inputmode="tel" maxlength="16" placeholder="(84) 99999-9999"></label>
+<label class="field">E-mail<input name="email" type="email" autocomplete="email" maxlength="180" placeholder="voce@email.com"></label>
+</div></section>
+
+<section class="wizard-step" data-step="3" hidden>
+<p class="registration-status">UM POUCO MAIS SOBRE VOCÊ</p><h1>Queremos<br><em>te conhecer.</em></h1><p class="step-description">As respostas abaixo ajudam a equipe a acolher e organizar melhor os participantes.</p>
+<fieldset class="form-fieldset"><legend>Você é evangélico(a)?</legend><div class="choice-grid two-columns">
+<label class="choice-card"><input type="radio" name="evangelico" value="sim"><span>Sim</span></label><label class="choice-card"><input type="radio" name="evangelico" value="nao"><span>Não</span></label>
+</div></fieldset>
+<div id="evangelical-fields" class="conditional-block" hidden>
+<fieldset class="form-fieldset"><legend>É da Lagoinha ou de outra igreja?</legend><div class="choice-grid two-columns">
+<label class="choice-card"><input type="radio" name="igreja_tipo" value="lagoinha"><span>Lagoinha</span></label><label class="choice-card"><input type="radio" name="igreja_tipo" value="outra_igreja"><span>Outra igreja</span></label>
+</div></fieldset>
+<fieldset id="lagoinha-fields" class="form-fieldset conditional-block" hidden><legend>É da Lagoinha Ceará-Mirim ou de outra Lagoinha?</legend><div class="choice-grid two-columns">
+<label class="choice-card"><input type="radio" name="igreja_unidade" value="ceara_mirim"><span>Lagoinha Ceará-Mirim</span></label><label class="choice-card"><input type="radio" name="igreja_unidade" value="outra_lagoinha"><span>Outra Lagoinha</span></label>
+</div>
+<label id="other-lagoinha-field" class="field conditional-block" hidden>Qual Lagoinha?<input name="igreja_nome_lagoinha" maxlength="160" placeholder="Cidade ou unidade"></label></fieldset>
+<label id="other-church-field" class="field conditional-block" hidden>De qual igreja você participa?<input name="igreja_nome_outra" maxlength="160" placeholder="Nome da igreja"></label>
+</div>
+<div id="religion-fields" class="conditional-block" hidden>
+<fieldset class="form-fieldset"><legend>Qual é a sua religião?</legend><div class="choice-grid two-columns">
+<label class="choice-card"><input type="radio" name="religiao" value="catolico"><span>Católico(a)</span></label>
+<label class="choice-card"><input type="radio" name="religiao" value="espirita"><span>Espírita</span></label>
+<label class="choice-card"><input type="radio" name="religiao" value="umbanda"><span>Umbanda</span></label>
+<label class="choice-card"><input type="radio" name="religiao" value="kimbanda"><span>Kimbanda</span></label>
+<label class="choice-card"><input type="radio" name="religiao" value="candomblecista"><span>Candomblecista</span></label>
+<label class="choice-card"><input type="radio" name="religiao" value="ateu"><span>Ateu(ateia)</span></label>
+<label class="choice-card"><input type="radio" name="religiao" value="outra"><span>Outra</span></label>
+</div></fieldset>
+<label id="religion-other-field" class="field conditional-block" hidden>Qual religião?<input name="religiao_outra" maxlength="120" placeholder="Digite sua resposta"></label>
+</div></section>
+
+<section class="wizard-step" data-step="4" hidden>
+<p class="registration-status">ÚLTIMA ETAPA</p><h1>Agora, vamos<br><em>finalizar.</em></h1><p class="step-description">Escolha como você vai pagar sua inscrição no valor de <strong id="price-label">R$ 270,00</strong>.</p>
+<fieldset class="form-fieldset"><legend>Forma de pagamento</legend><div class="choice-grid">
+<label class="choice-card payment-choice"><input type="radio" name="metodo_pagamento" value="pix"><span><strong>Pix</strong><small>Checkout InfinitePay</small></span></label>
+<label class="choice-card payment-choice"><input type="radio" name="metodo_pagamento" value="cartao"><span><strong>Cartão</strong><small>Checkout InfinitePay</small></span></label>
+<label class="choice-card payment-choice"><input type="radio" name="metodo_pagamento" value="carne"><span><strong>Carnê</strong><small>De 1 a 3 parcelas</small></span></label>
+<label class="choice-card payment-choice"><input type="radio" name="metodo_pagamento" value="especie"><span><strong>Espécie</strong><small>Pagamento presencial à equipe</small></span></label>
+</div></fieldset>
+<div id="installment-options" class="conditional-block installment-options" hidden>
+<label class="field">Quantidade de parcelas<select name="parcelas" id="installment-count"><option value="">Selecione</option><option value="1">1 parcela</option><option value="2">2 parcelas</option><option value="3">3 parcelas</option></select></label>
+<label class="field">Vencimento da primeira parcela<input type="date" name="primeiro_vencimento" id="first-due-date"></label>
+<p class="field-help">As próximas parcelas vencem mensalmente no mesmo dia. O PDF terá uma página para cada parcela.</p>
+</div>
+<div class="consent-area">
+<label class="consent-check"><input type="checkbox" name="consentimento_privacidade"><span>Li e concordo com a <a href="../privacidade/" target="_blank" rel="noopener">Política de Privacidade</a> do ACAMP 2027.</span></label>
+<label class="consent-check"><input type="checkbox" name="consentimento_dados_sensiveis"><span>Estou ciente e autorizo expressamente o tratamento da informação sobre religião/igreja, dado pessoal sensível, exclusivamente para organização, acolhimento e segurança do evento.</span></label>
+</div></section>
+
+<div class="wizard-error" id="form-error" role="alert" aria-live="polite" hidden></div>
+<div class="wizard-actions"><button type="button" class="wizard-back" id="back-button" hidden>← Voltar</button><span class="wizard-spacer"></span><button type="button" class="wizard-next" id="next-button">Continuar <span>↗</span></button><button type="submit" class="wizard-next" id="submit-button" hidden>Finalizar inscrição <span>↗</span></button></div>
+</form>
+<div class="wizard-success" id="wizard-success" hidden><p class="registration-status">INSCRIÇÃO REGISTRADA</p><h1>VOCÊ FAZ PARTE<br><em>DO ACAMP.</em></h1><p id="success-message">Seus dados foram registrados.</p><div class="success-code"><span>CÓDIGO DA INSCRIÇÃO</span><strong id="success-code-value">—</strong></div><button type="button" class="wizard-next" id="download-pdf" hidden>Baixar carnê em PDF ↓</button><a class="wizard-next success-home" href="../">Voltar para o Acamp ↗</a></div>
+<div class="registration-footer"><span>06 — 08 · 2027</span><span>POUSADA DUNAMIS · JACUMÃ</span></div>
+</section><span class="registration-side-note">UMA ROTA DIFERENTE TE ESPERA</span></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script><script type="module" src="./inscricoes.js"></script></body></html>
