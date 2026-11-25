@@ -48,3 +48,7 @@
  .lookup-actions .wizard-next,.lookup-actions .wizard-back{width:100%}
  .lookup-table-heading{align-items:flex-start;flex-direction:column}
 }
+.lookup-card>h1{margin:0;font:400 clamp(48px,8.3vw,82px)/.88 var(--font-display);letter-spacing:-.025em}
+.lookup-card>h1 em{color:var(--color-red);font-family:var(--font-accent);font-style:normal}
+.lookup-card>.step-description{max-width:620px}
+@media(max-width:600px){.lookup-card>h1{font-size:clamp(44px,12vw,66px)}}
