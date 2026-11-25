@@ -5,3 +5,7 @@
 .success-actions .success-home:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.55)}
 .download-feedback{margin-top:12px}
 @media(max-width:600px){.success-actions{display:grid;grid-template-columns:1fr;gap:12px}.success-actions .wizard-next{width:100%}}
+
+.registration-existing-link{display:inline-flex;flex-wrap:wrap;gap:5px;margin:13px 0 18px;color:rgba(255,255,255,.58);font-size:11px;text-decoration:none;transition:color .2s ease}
+.registration-existing-link strong{color:rgba(255,255,255,.9);text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:3px}
+.registration-existing-link:hover,.registration-existing-link:hover strong{color:var(--color-red)}
