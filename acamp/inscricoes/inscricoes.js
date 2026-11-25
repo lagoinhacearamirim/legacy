@@ -55,7 +55,7 @@ $("#download-pdf").addEventListener("click",()=>{
   feedback.hidden=false;
  }
 });
-$("#nome-completo").addEventListener("input",updateGreeting);entListener("input",updateGreeting);
+$("#nome-completo").addEventListener("input",updateGreeting);
 form.addEventListener("change",()=>{updateReligious();updatePayment();});
 $("#cpf").addEventListener("input",e=>{let v=digits(e.target.value).slice(0,11);v=v.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");e.target.value=v;});
 $("#telefone").addEventListener("input",e=>{let v=digits(e.target.value).slice(0,11);v=v.replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d{5})(\d{1,4})$/,"$1-$2");e.target.value=v;});
