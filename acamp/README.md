@@ -52,3 +52,10 @@ on conflict (email) do update set ativo = excluded.ativo;
 Os dados do formulário não são gravados diretamente pelo navegador nas tabelas: o navegador chama a Edge Function, que valida os campos e usa credenciais do servidor. As parcelas do carnê ficam individualizadas em `public.inscricao_parcelas`.
 
 Para habilitar o checkout, configure a InfiniteTag da organização em `eventos.configuracoes.infinitepay_handle` (evento `acamp-2027`). A API Key da InfinitePay é opcional para criar links básicos e, caso seja usada para opções avançadas, deve ser cadastrada como segredo da Edge Function, nunca no front-end.
+
+
+## Minha inscrição
+
+A consulta do participante fica em `/acamp/minha-inscricao/`. A pessoa informa o CPF cadastrado para visualizar o código e os dados básicos da inscrição, além da situação das parcelas ou do pagamento único. A consulta é somente leitura: a confirmação de pagamentos continua restrita à equipe administrativa.
+
+A Edge Function `acamp-api` valida o CPF e aplica limite de cinco consultas por endereço IP a cada dez minutos. A tabela interna de controle de tentativas tem RLS habilitado e não é acessível pelos papéis públicos.
