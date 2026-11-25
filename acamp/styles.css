@@ -966,3 +966,10 @@ button, a { font: inherit; }
     font-size: 7px;
   }
 }
+
+.existing-registration-link{display:inline-flex;flex-wrap:wrap;align-items:center;gap:5px;color:rgba(255,255,255,.66);font-size:11px;line-height:1.5;text-decoration:none;transition:color .2s ease}
+.existing-registration-link strong{color:var(--color-paper-bright);font-weight:700;text-decoration:underline;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:3px}
+.existing-registration-link:hover,.existing-registration-link:hover strong{color:var(--color-red)}
+.final-existing-link{color:var(--color-ink-muted);font-size:12px}
+.final-existing-link strong{color:var(--color-ink)}
+@media(max-width:760px){.final-cta-bottom .final-existing-link{width:100%;justify-content:center;padding:10px 0}}
