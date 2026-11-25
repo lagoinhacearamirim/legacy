@@ -9,3 +9,10 @@
 .registration-existing-link{display:inline-flex;flex-wrap:wrap;gap:5px;margin:13px 0 18px;color:rgba(255,255,255,.58);font-size:11px;text-decoration:none;transition:color .2s ease}
 .registration-existing-link strong{color:rgba(255,255,255,.9);text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:3px}
 .registration-existing-link:hover,.registration-existing-link:hover strong{color:var(--color-red)}
+
+
+/* Aviso temporário para pagamentos em configuração */
+.payment-unavailable-modal{width:min(calc(100% - 36px),430px);padding:30px;border:1px solid rgba(255,255,255,.16);border-radius:8px;color:var(--color-paper-bright);background:#242723;box-shadow:0 24px 80px rgba(0,0,0,.45);text-align:center}
+.payment-unavailable-modal::backdrop{background:rgba(10,11,10,.78);backdrop-filter:blur(4px)}
+.payment-unavailable-modal p{margin:0 0 24px;font-size:15px;line-height:1.65}
+.payment-unavailable-modal button{min-height:44px;padding:0 24px;border:0;border-radius:3px;background:var(--color-red);color:#fff;font:800 11px/1 var(--font-condensed);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
