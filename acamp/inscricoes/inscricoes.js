@@ -29,9 +29,33 @@ function payload(){const ev=chosen("evangelico")==="sim";const church=chosen("ig
 async function apiCall(body){const res=await fetch(URL_API+"/functions/v1/acamp-api",{method:"POST",headers:{"Content-Type":"application/json",apikey:PUBLIC_KEY,Authorization:"Bearer "+PUBLIC_KEY},body:JSON.stringify(body)});const data=await res.json().catch(()=>({}));if(!res.ok||data.error)throw new Error(data.error||"Não foi possível concluir a inscrição.");return data;}
 function currency(c){return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(c/100);}
 function months(date,n){const [y,m,d]=date.split("-").map(Number);const first=new Date(y,m-1+n,1);const last=new Date(first.getFullYear(),first.getMonth()+1,0).getDate();return new Date(first.getFullYear(),first.getMonth(),Math.min(d,last)).toLocaleDateString("pt-BR");}
-function makePdf(result,p){const JsPDF=window.jspdf?.jsPDF;if(!JsPDF)throw new Error("Não foi possível carregar o gerador de PDF.");const doc=new JsPDF({unit:"mm",format:"a4"});(result.parcelas||[]).forEach((part,i)=>{if(i)doc.addPage();doc.setFillColor(25,28,25);doc.rect(0,0,210,48,"F");doc.setTextColor(255,255,255);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("LEGACY / ACAMP 2027",18,17);doc.setFontSize(23);doc.text("CARNÊ DE INSCRIÇÃO",18,32);doc.setTextColor(35,38,34);doc.setFontSize(16);doc.text("PARCELA "+part.numero+" DE "+result.parcelas.length,18,67);const rows=[["Participante",p.nome_completo],["CPF",p.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4")],["Telefone",p.telefone],["E-mail",p.email],["Código",result.inscription.codigo_ingresso],["Valor total",currency(result.inscription.valor_total_centavos)],["Valor da parcela",currency(part.valor_centavos)],["Vencimento",months(p.primeiro_vencimento,i)],["Situação","PENDENTE"]];let y=86;doc.setFontSize(11);rows.forEach(([k,v])=>{doc.setFont("helvetica","bold");doc.text(k+":",18,y);doc.setFont("helvetica","normal");doc.text(String(v),76,y);y+=11;});doc.setDrawColor(180,180,180);doc.line(18,188,192,188);doc.setFontSize(9);doc.setTextColor(95,95,95);doc.text("A confirmação do pagamento deve ser realizada pela equipe organizadora.",18,198);doc.setFont("helvetica","bold");doc.setTextColor(170,42,43);doc.text("ACAMP 2027 · 06 A 08 DE AGOSTO",18,274);});const name=p.nome_completo.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/gi,"-").toLowerCase();doc.save("carne-acamp27-"+name+".pdf");}
-function success(result,p){form.hidden=true;$(".wizard-progress").hidden=true;$("#wizard-success").hidden=false;$("#success-code-value").textContent=result.inscription.codigo_ingresso;if(result.method==="carne"){$("#success-message").textContent="Sua inscrição foi registrada. O carnê foi gerado com uma página para cada parcela. Guarde o PDF para acompanhar os vencimentos.";$("#download-pdf").hidden=false;lastCarnet=()=>makePdf(result,p);$("#download-pdf").onclick=lastCarnet;makePdf(result,p);}else{$("#success-message").textContent="Sua inscrição foi registrada. O pagamento em espécie está pendente e deverá ser realizado presencialmente com a equipe do Acamp.";}}
-$("#nome-completo").addEventListener("input",updateGreeting);
+function makePdf(result,p){const JsPDF=window.jspdf?.jsPDF;if(!JsPDF)throw new Error("Não foi possível carregar o gerador de PDF.");const doc=new JsPDF({unit:"mm",format:"a4"});(result.parcelas||[]).forEach((part,i)=>{if(i)doc.addPage();doc.setFillColor(25,28,25);doc.rect(0,0,210,48,"F");doc.setTextColor(255,255,255);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("LEGACY / ACAMP 2027",18,17);doc.setFontSize(23);doc.text("CARNÊ DE INSCRIÇÃO",18,32);doc.setTextColor(35,38,34);doc.setFontSize(16);doc.text("PARCELA "+part.numero+" DE "+result.parcelas.length,18,67);const rows=[["Participante",p.nome_completo],["CPF",p.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4")],["Telefone",p.telefone],["E-mail",p.email],["Código",result.inscription.codigo_ingresso],["Valor total",currency(result.inscription.valor_total_centavos)],["Valor da parcela",currency(part.valor_centavos)],["Vencimento",months(p.primeiro_vencimento,i)],["Situação","PENDENTE"]];let y=86;doc.setFontSize(11);rows.forEach(([k,v])=>{doc.setFont("helvetica","bold");doc.text(k+":",18,y);doc.setFont("helvetica","normal");doc.text(String(v),76,y);y+=11;});doc.setDrawColor(180,180,180);doc.line(18,188,192,188);doc.setFontSize(9);doc.setTextColor(95,95,95);doc.text("A confirmação do pagamento deve ser realizada pela equipe organizadora.",18,198);doc.setFont("helvetica","bold");doc.setTextColor(170,42,43);doc.text("ACAMP 2027 · 06 A 08 DE FEVEREIRO",18,274);});const name=p.nome_completo.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/gi,"-").toLowerCase();const blob=doc.output("blob");const fileUrl=URL.createObjectURL(blob);const link=document.createElement("a");link.href=fileUrl;link.download="carne-acamp27-"+name+".pdf";link.style.position="fixed";link.style.left="-9999px";document.body.appendChild(link);link.click();link.remove();window.setTimeout(()=>URL.revokeObjectURL(fileUrl),1500);}
+function success(result,p){
+ form.hidden=true;
+ $(".wizard-progress").hidden=true;
+ $("#wizard-success").hidden=false;
+ $("#success-code-value").textContent=result.inscription.codigo_ingresso;
+ if(result.method==="carne"){
+  $("#success-message").textContent="Sua inscrição foi registrada. O carnê tem uma página para cada parcela. Baixe o PDF pelo botão abaixo e consulte os pagamentos quando quiser.";
+  $("#download-pdf").hidden=false;
+  lastCarnet=()=>makePdf(result,p);
+ }else{
+  $("#success-message").textContent="Sua inscrição foi registrada. A situação do pagamento poderá ser consultada na página Minha inscrição.";
+ }
+}
+$("#download-pdf").addEventListener("click",()=>{
+ const feedback=$("#download-feedback");
+ try{
+  if(!lastCarnet)throw new Error("O carnê não está disponível nesta inscrição.");
+  lastCarnet();
+  feedback.textContent="Download do carnê iniciado.";
+  feedback.hidden=false;
+ }catch(err){
+  feedback.textContent=err.message||"Não foi possível gerar o PDF. Tente novamente.";
+  feedback.hidden=false;
+ }
+});
+$("#nome-completo").addEventListener("input",updateGreeting);entListener("input",updateGreeting);
 form.addEventListener("change",()=>{updateReligious();updatePayment();});
 $("#cpf").addEventListener("input",e=>{let v=digits(e.target.value).slice(0,11);v=v.replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");e.target.value=v;});
 $("#telefone").addEventListener("input",e=>{let v=digits(e.target.value).slice(0,11);v=v.replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d{5})(\d{1,4})$/,"$1-$2");e.target.value=v;});
