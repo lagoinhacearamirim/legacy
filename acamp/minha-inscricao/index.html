@@ -81,7 +81,13 @@
           </div>
         </div>
 
-        <p class="lookup-readonly-note"><span aria-hidden="true">ⓘ</span> Esta página apenas consulta os registros do sistema. A confirmação ou baixa de pagamentos é realizada exclusivamente pela equipe responsável.</p>
+        <section class="online-payment" id="online-payment" hidden>
+          <div class="online-payment-heading"><div><p class="registration-status">PAGAMENTO ONLINE</p><h3>Regularize sua inscrição.</h3><p id="online-payment-description">Escolha como deseja pagar o valor que ainda está em aberto.</p></div><span class="online-payment-icon" aria-hidden="true">↗</span></div>
+          <button type="button" class="wizard-next online-pay-toggle" id="online-pay-toggle">Pagar online <span>↗</span></button>
+          <div class="online-pay-options" id="online-pay-options" hidden><p>Selecione o valor que deseja pagar:</p><div class="payment-options" id="payment-options"></div></div>
+          <p class="online-payment-message" id="online-payment-message" role="status" aria-live="polite" hidden></p>
+        </section>
+        <p class="lookup-readonly-note"><span aria-hidden="true">ⓘ</span> A confirmação dos pagamentos é feita pela InfinitePay. A inscrição só será atualizada após a validação do pagamento.</p>
       </section>
 
       <div class="registration-footer"><span>06 — 08 · 2027</span><span>POUSADA DUNAMIS · JACUMÃ</span></div>
