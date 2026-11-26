@@ -52,3 +52,47 @@
 .lookup-card>h1 em{color:var(--color-red);font-family:var(--font-accent);font-style:normal}
 .lookup-card>.step-description{max-width:620px}
 @media(max-width:600px){.lookup-card>h1{font-size:clamp(44px,12vw,66px)}}
+
+/* Refinos de leitura e navegação em telas estreitas */
+.lookup-card,
+.lookup-results,
+.lookup-details,
+.lookup-summary,
+.lookup-installments { min-width: 0; }
+.lookup-card { overflow-wrap: anywhere; }
+.lookup-result-heading { min-width: 0; }
+.lookup-code { max-width: 100%; overflow-wrap: anywhere; }
+.lookup-table-scroll { max-width: 100%; -webkit-overflow-scrolling: touch; }
+.lookup-table-scroll table { white-space: nowrap; }
+.lookup-readonly-note { overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .registration-shell { padding-left: 12px; padding-right: 12px; }
+  .lookup-card { width: 100%; padding: 24px 16px; }
+  .lookup-card .wizard-top { gap: 9px; }
+  .lookup-card .registration-index { font-size: 8px; letter-spacing: .11em; }
+  .lookup-card .wizard-deadline { font-size: 7px; letter-spacing: .1em; }
+  .lookup-card .registration-status { margin-top: 26px; }
+  .lookup-card > h1 { font-size: clamp(39px, 11vw, 58px); line-height: .94; }
+  .lookup-card > .step-description { margin: 18px 0 22px; font-size: 13px; }
+  .lookup-form { margin-top: 22px; }
+  .lookup-actions { gap: 10px; }
+  .lookup-actions .wizard-next,
+  .lookup-actions .wizard-back { min-height: 48px; }
+  .lookup-results { margin-top: 28px; padding-top: 24px; }
+  .lookup-result-heading { gap: 12px; margin-bottom: 18px; }
+  .lookup-result-heading h2 { font-size: clamp(27px, 8vw, 36px); line-height: 1.1; }
+  .lookup-details { gap: 8px; }
+  .lookup-details > div { padding: 12px; }
+  .lookup-summary { gap: 8px; }
+  .lookup-stat { padding: 13px 12px; }
+  .lookup-installments { margin-top: 24px; }
+  .lookup-table-scroll th,
+  .lookup-table-scroll td { padding: 11px 10px; font-size: 10px; }
+  .lookup-readonly-note { padding: 12px; font-size: 10px; }
+  .lookup-card .registration-footer { gap: 8px; }
+}
+@media (max-width: 360px) {
+  .lookup-card { padding: 22px 13px; }
+  .lookup-card > h1 { font-size: 38px; }
+  .lookup-card .registration-index { font-size: 7px; }
+}
