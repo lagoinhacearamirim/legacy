@@ -96,3 +96,29 @@
   .lookup-card > h1 { font-size: 38px; }
   .lookup-card .registration-index { font-size: 7px; }
 }
+
+
+.online-payment{margin-top:24px;padding:20px;border:1px solid rgba(185,201,164,.28);background:rgba(185,201,164,.07)}
+.online-payment[hidden],.online-pay-options[hidden]{display:none}
+.online-payment-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.online-payment-heading .registration-status{margin:0 0 8px;color:#b9c9a4}
+.online-payment-heading h3{margin:0;color:var(--color-paper-bright);font:600 21px/1.2 var(--font-heavy)}
+.online-payment-heading p:last-child{margin:7px 0 0;color:rgba(255,255,255,.62);font-size:12px;line-height:1.5}
+.online-payment-icon{display:grid;place-items:center;flex:0 0 38px;height:38px;border:1px solid rgba(185,201,164,.3);border-radius:50%;color:#c9d9b5;font-size:20px}
+.online-pay-toggle{min-height:46px}
+.online-pay-options{margin-top:18px;padding-top:15px;border-top:1px solid rgba(255,255,255,.12)}
+.online-pay-options>p{margin:0 0 11px;color:rgba(255,255,255,.7);font-size:12px}
+.payment-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px}
+.payment-option-button{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:54px;padding:10px 13px;border:1px solid rgba(255,255,255,.18);border-radius:5px;background:rgba(0,0,0,.18);color:#fff;text-align:left;font:600 12px var(--font-body);cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.payment-option-button:hover{border-color:#b9c9a4;background:rgba(185,201,164,.12)}
+.payment-option-button strong{color:#c9d9b5;font-size:12px;white-space:nowrap}
+.payment-option-button:disabled{opacity:.55;cursor:wait}
+.online-payment-message{margin:13px 0 0;padding:11px 12px;border-left:2px solid #b9c9a4;background:rgba(185,201,164,.08);color:#d6dfca;font-size:11px;line-height:1.55;overflow-wrap:anywhere}
+.online-payment-message.is-error{border-color:#d99b89;background:rgba(217,155,137,.08);color:#f0c5b8}
+.online-payment-message[hidden]{display:none}
+@media(max-width:600px){
+ .online-payment{padding:15px}
+ .online-payment-heading h3{font-size:19px}
+ .payment-options{grid-template-columns:1fr}
+ .payment-option-button{min-height:50px}
+}
