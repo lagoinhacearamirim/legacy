@@ -45,7 +45,7 @@ function duplicateReason(a,b){
  const emailA=String(a.email||"").trim().toLowerCase(),emailB=String(b.email||"").trim().toLowerCase();
  if(emailA&&emailA===emailB)return "Mesmo e-mail";
  const nameA=normalized(a.nome_completo),nameB=normalized(b.nome_completo);
- if(nameA.length>=9&&nameB.length>=9&&editSimilarity(nameA,nameB)>=0.88)return "Nome muito semelhante";
+ if(nameA.length>=9&&nameB.length>=9&&editSimilarity(nameA,nameB)>=0.84)return "Nome muito semelhante";
  return "";
 }
 function findDuplicateGroups(){
