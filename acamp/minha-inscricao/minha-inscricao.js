@@ -182,16 +182,17 @@ async function paymentReturn(){
  const query=new URLSearchParams(location.search);if(query.get("payment_return")!=="1")return;
  const order=query.get("order_nsu"),transaction=query.get("transaction_nsu"),slug=query.get("slug");
  const cpf=sessionStorage.getItem("acamp_online_payment_cpf")||"";
+ let returnMessage="",returnError=false;
  try{
   if(!order||!transaction||!slug)throw new Error("Não recebemos todos os dados de retorno da InfinitePay. Consulte sua inscrição novamente.");
   const result=await apiCall({action:"confirm_payment",order_nsu:order,transaction_nsu:transaction,slug,receipt_url:query.get("receipt_url")||null});
-  if(result.paid)showMessage("Pagamento confirmado pela InfinitePay. Atualizando sua inscrição...",false);
-  else showMessage("O pagamento ainda não foi confirmado pela operadora. Consulte novamente em instantes.",false);
- }catch(error){showMessage(error.message||"Não foi possível confirmar o pagamento.",true);}
+  returnMessage=result.paid?"Pagamento confirmado pela InfinitePay. Sua inscrição foi atualizada.":"O pagamento ainda não foi confirmado pela operadora. Consulte novamente em instantes.";
+ }catch(error){returnMessage=error.message||"Não foi possível confirmar o pagamento.";returnError=true;}
  finally{
   history.replaceState({},"",location.pathname);
   sessionStorage.removeItem("acamp_online_payment_cpf");
   if(cpf){$("#lookup-cpf").value=cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4");await performLookup(cpf);}
+  showMessage(returnMessage,returnError);
  }
 }
 paymentReturn();
