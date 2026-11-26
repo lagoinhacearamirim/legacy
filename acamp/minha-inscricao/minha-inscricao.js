@@ -30,7 +30,7 @@ function methodName(value){
  return ({pix:"Pix",cartao:"Cartão",especie:"Espécie",carne:"Carnê"})[value]||"Pagamento";
 }
 function statusName(status){
- return ({paga:"Paga",pago:"Pago",pendente:"Pendente",aguardando:"Aguardando pagamento",cancelada:"Cancelada",cancelado:"Cancelado",estornado:"Estornado",falhou:"Não confirmado"})[status]||"Pendente";
+ return ({paga:"Paga",pago:"Pago",pendente:"Pendente",aguardando:"Aguardando pagamento",cancelada:"Cancelada",cancelado:"Cancelado",estornado:"Estornado",falhou:"Não confirmado",parcial:"Pagamento parcial"})[status]||"Pendente";
 }
 function showMessage(message,isError=true){
  const node=$("#lookup-message");
@@ -89,9 +89,9 @@ function renderResult(data){
  }else{
   const payment=data.pagamento||{};
   const row=document.createElement("tr");
-  addCell(row,"Pagamento único");
+  addCell(row,data.pagamento?.status==="parcial"?"Saldo pendente":"Pagamento único");
   addCell(row,"—");
-  addCell(row,currency(inscription.valor_total_centavos));
+  addCell(row,currency(data.pagamento?.status==="parcial"?data.pagamento.remaining_centavos:inscription.valor_total_centavos));
   const statusCell=addCell(row,"");
   const badge=document.createElement("span");
   badge.className="lookup-payment-status"+(payment.status==="pago"?" is-paid":"");
@@ -124,7 +124,7 @@ function renderOnlinePayment(data){
    options.push({option:"full",label:"Pagar integralmente",amount:full});
   }
  }else{
-  options.push({option:"full",label:"Pagar integralmente",amount:Number(inscription.valor_total_centavos||0)});
+  options.push({option:"full",label:"Pagar integralmente",amount:Number(data.pagamento?.remaining_centavos??inscription.valor_total_centavos??0)});
  }
  $("#payment-options").innerHTML=options.map(o=>'<button type="button" class="payment-option-button" data-pay-option="'+o.option+'"><span>'+o.label+'</span><strong>'+currency(o.amount)+'</strong></button>').join("");
 }
