@@ -17,7 +17,8 @@ function reportSupportError(code,activity=currentActivity){
  const message="Olá, estava tentando "+activity+" e apareceu o erro "+validCode;
  $("#form-error").textContent="Erro "+validCode+". Contate o suporte.";
  $("#form-error").hidden=false;
- window.location.href="https://wa.me/5584991000682?text="+encodeURIComponent(message);
+ const whatsapp="https://wa.me/5584991000682?text="+encodeURIComponent(message);
+ window.setTimeout(()=>{window.location.href=whatsapp;},700);
 }
 function isSupportError(err){return Boolean(err&&err.errorCode);}
 function validCpf(raw){const c=digits(raw);if(c.length!==11||/^(\d)\1{10}$/.test(c))return false;const calc=(base,f)=>{let sum=0;for(const n of base)sum+=Number(n)*f--;const r=(sum*10)%11;return r===10?0:r;};return calc(c.slice(0,9),10)===Number(c[9])&&calc(c.slice(0,10),11)===Number(c[10]);}
