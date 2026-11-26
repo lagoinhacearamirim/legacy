@@ -11,6 +11,30 @@ const digits=s=>String(s||"").replace(/\D/g,"");
 const text=s=>String(s||"").trim();
 function error(message){$("#form-error").textContent=message||"";$("#form-error").hidden=!message;}
 let currentActivity="finalizar a inscrição no ACAMP";
+let submissionInProgress=false;
+let loaderTimer=null;
+function beginLoading(title,message){
+ clearTimeout(loaderTimer);
+ loaderTimer=window.setTimeout(()=>{
+  const overlay=$("#registration-loader");
+  if(!overlay)return;
+  $("#registration-loader-title").textContent=title;
+  $("#registration-loader-message").textContent=message;
+  overlay.hidden=false;
+  overlay.setAttribute("aria-hidden","false");
+ },1000);
+}
+function endLoading(){
+ clearTimeout(loaderTimer);
+ loaderTimer=null;
+ const overlay=$("#registration-loader");
+ if(overlay){overlay.hidden=true;overlay.setAttribute("aria-hidden","true");}
+}
+async function waitForServer(task,title="Processando sua solicitação",message="Estamos aguardando a confirmação do servidor. Não feche esta página."){
+ beginLoading(title,message);
+ try{return await task();}
+ finally{endLoading();}
+}
 function reportSupportError(code,activity=currentActivity){
  const validCode=/^AC-\d{3}$/.test(String(code))?String(code):"AC-999";
  const message="Olá, estava tentando "+activity+" e apareceu o erro "+validCode;
@@ -92,12 +116,34 @@ $("#cpf").addEventListener("input",e=>{let v=digits(e.target.value).slice(0,11);
 $("#telefone").addEventListener("input",e=>{let v=digits(e.target.value).slice(0,11);v=v.replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d{5})(\d{1,4})$/,"$1-$2");e.target.value=v;});
 $("#next-button").addEventListener("click",()=>{try{validate(step);if(step===1)updateGreeting();showStep(Math.min(4,step+1));}catch(e){error(e.message);}});
 $("#back-button").addEventListener("click",()=>showStep(Math.max(1,step-1)));
-form.addEventListener("submit",async e=>{e.preventDefault();try{validate(4);error("");currentActivity="finalizar a inscrição no ACAMP";$("#submit-button").disabled=true;$("#submit-button").textContent="REGISTRANDO...";const p=payload();const result=await apiCall(p);if(result.checkout_url){currentActivity="gerar o checkout do pagamento da inscrição";location.assign(result.checkout_url);return;}success(result,p);}catch(err){
- if(err?.errorCode==="AC-103")error("Este CPF já possui uma inscrição no ACAMP 2027. Se você já se inscreveu, consulte sua inscrição. Se acredita que isso é um engano, entre em contato com a equipe.");
- else if(err?.errorCode==="AC-902")error("Muitas tentativas em pouco tempo. Aguarde alguns minutos antes de tentar novamente.");
- else if(isSupportError(err))reportSupportError(err.errorCode);
- else error(err.message||"Ocorreu um erro ao registrar sua inscrição.");
-}finally{$("#submit-button").disabled=false;$("#submit-button").innerHTML='Finalizar inscrição <span>↗</span>';}});
+form.addEventListener("submit",async e=>{
+ e.preventDefault();
+ if(submissionInProgress)return;
+ try{validate(4);}catch(err){error(err.message);return;}
+ submissionInProgress=true;
+ error("");
+ currentActivity="finalizar a inscrição no ACAMP";
+ const submit=$("#submit-button"),next=$("#next-button"),back=$("#back-button");
+ submit.disabled=true;next.disabled=true;back.disabled=true;
+ submit.setAttribute("aria-busy","true");
+ submit.textContent="REGISTRANDO...";
+ try{
+  const p=payload();
+  const result=await waitForServer(()=>apiCall(p),"Registrando inscrição","Estamos salvando seus dados e aguardando o retorno do sistema.");
+  if(result.checkout_url){currentActivity="gerar o checkout do pagamento da inscrição";location.assign(result.checkout_url);return;}
+  success(result,p);
+ }catch(err){
+  if(err?.errorCode==="AC-103")error("Este CPF já possui uma inscrição no ACAMP 2027. Se você já se inscreveu, consulte sua inscrição. Se acredita que isso é um engano, entre em contato com a equipe.");
+  else if(err?.errorCode==="AC-902")error("Muitas tentativas em pouco tempo. Aguarde alguns minutos antes de tentar novamente.");
+  else if(isSupportError(err))reportSupportError(err.errorCode);
+  else error(err.message||"Ocorreu um erro ao registrar sua inscrição.");
+ }finally{
+  submissionInProgress=false;
+  submit.disabled=false;next.disabled=false;back.disabled=false;
+  submit.removeAttribute("aria-busy");
+  submit.innerHTML='Finalizar inscrição <span>↗</span>';
+ }
+});
 
-async function paymentReturn(){const q=new URLSearchParams(location.search);if(q.get("payment_return")!=="1")return;currentActivity="confirmar o pagamento e retornar ao site";const order=q.get("order_nsu"),transaction=q.get("transaction_nsu"),slug=q.get("slug");const box=document.createElement("div");box.className="wizard-error";box.hidden=false;if(!order||!transaction||!slug){reportSupportError("AC-301","retornar do checkout para confirmar o pagamento");return;}try{const result=await apiCall({action:"confirm_payment",order_nsu:order,transaction_nsu:transaction,slug,receipt_url:q.get("receipt_url")||null});box.textContent=result.paid?"Pagamento confirmado pela InfinitePay. Sua inscrição está quitada!":"Checkout retornou, mas a confirmação ainda não foi recebida. A situação será atualizada após a confirmação da InfinitePay.";}catch(err){if(isSupportError(err)){reportSupportError(err.errorCode);return;}box.textContent=err.message;}$("#registration-panel").prepend(box);history.replaceState({},"",location.pathname);}
+async function paymentReturn(){const q=new URLSearchParams(location.search);if(q.get("payment_return")!=="1")return;currentActivity="confirmar o pagamento e retornar ao site";const order=q.get("order_nsu"),transaction=q.get("transaction_nsu"),slug=q.get("slug");const box=document.createElement("div");box.className="wizard-error";box.hidden=false;if(!order||!transaction||!slug){reportSupportError("AC-301","retornar do checkout para confirmar o pagamento");return;}try{const result=await waitForServer(()=>apiCall({action:"confirm_payment",order_nsu:order,transaction_nsu:transaction,slug,receipt_url:q.get("receipt_url")||null}),"Verificando pagamento","Estamos consultando a confirmação da InfinitePay. Aguarde sem atualizar a página.");box.textContent=result.paid?"Pagamento confirmado pela InfinitePay. Sua inscrição está quitada!":"Checkout retornou, mas a confirmação ainda não foi recebida. A situação será atualizada após a confirmação da InfinitePay.";}catch(err){if(isSupportError(err)){reportSupportError(err.errorCode);return;}box.textContent=err.message;}$("#registration-panel").prepend(box);history.replaceState({},"",location.pathname);}
 $("#first-due-date").min=today();$("#first-due-date").value=today();paymentReturn();
