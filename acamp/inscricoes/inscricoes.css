@@ -16,3 +16,5 @@
 .payment-unavailable-modal::backdrop{background:rgba(10,11,10,.78);backdrop-filter:blur(4px)}
 .payment-unavailable-modal p{margin:0 0 24px;font-size:15px;line-height:1.65}
 .payment-unavailable-modal button{min-height:44px;padding:0 24px;border:0;border-radius:3px;background:var(--color-red);color:#fff;font:800 11px/1 var(--font-condensed);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+
+.test-pix-button{margin-left:auto;border-color:rgba(255,255,255,.38);color:rgba(255,255,255,.82);font-size:9px;letter-spacing:.08em}.test-pix-button:hover{background:rgba(255,255,255,.08)}
