@@ -110,8 +110,9 @@ function renderResult(data){
 function renderPaymentMethodChange(data){
  const box=$("#method-change"),summary=data.resumo||{},inscription=data.inscricao;
  const pending=Number(summary.pendentes||0);
+ const hasConfirmedPayment=Number(summary.pagas||0)>0||Number(data.pagamento?.paid_amount_centavos||0)>0;
  const allPaid=Number(summary.total)>0&&Number(summary.pagas)===Number(summary.total);
- box.hidden=allPaid||pending<=0||inscription.status==="pago";
+ box.hidden=allPaid||hasConfirmedPayment||pending<=0||inscription.status==="pago";
  $("#method-change-options").hidden=true;
  $("#method-change-message").hidden=true;
 }
