@@ -28,7 +28,7 @@
         <label class="field">CPF do participante
           <input id="lookup-cpf" name="cpf" type="text" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" aria-describedby="lookup-help">
         </label>
-        <p class="field-help" id="lookup-help">A consulta é somente para visualização. Nenhum pagamento pode ser alterado nesta página.</p>
+        <p class="field-help" id="lookup-help">Consulte sua inscrição e, se ainda não houver pagamento confirmado, escolha outra modalidade de pagamento.</p>
         <div class="lookup-actions">
           <button type="submit" class="wizard-next" id="lookup-submit">Consultar inscrição <span>↗</span></button>
           <a class="wizard-back lookup-back" href="../">Página do Acamp</a>
@@ -81,6 +81,17 @@
             </table>
           </div>
         </div>
+
+        <section class="method-change" id="method-change" hidden>
+          <div class="method-change-heading"><div><p class="registration-status">MODALIDADE DE PAGAMENTO</p><h3>Quer mudar a forma de pagamento?</h3><p>Você pode trocar para carnê em 3 parcelas ou pagar online com cartão ou Pix.</p></div></div>
+          <button type="button" class="wizard-back method-change-toggle" id="method-change-toggle">Alterar forma de pagamento</button>
+          <div class="method-change-options" id="method-change-options" hidden>
+            <button type="button" class="method-change-option" data-method="carne"><strong>Carnê</strong><span>3 parcelas com vencimentos programados</span></button>
+            <button type="button" class="method-change-option" data-method="pix"><strong>Cartão ou Pix</strong><span>Pagamento online pela InfinitePay</span></button>
+          </div>
+          <p class="method-change-message" id="method-change-message" role="status" aria-live="polite" hidden></p>
+          <small class="method-change-warning">A troca só fica disponível enquanto nenhum pagamento tiver sido confirmado e não houver checkout online em aberto.</small>
+        </section>
 
         <section class="online-payment" id="online-payment" hidden>
           <div class="online-payment-heading"><div><p class="registration-status">PAGAMENTO ONLINE</p><h3>Regularize sua inscrição.</h3><p id="online-payment-description">Escolha como deseja pagar o valor que ainda está em aberto.</p></div><span class="online-payment-icon" aria-hidden="true">↗</span></div>
