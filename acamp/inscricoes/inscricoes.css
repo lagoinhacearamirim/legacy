@@ -19,3 +19,5 @@
 .registration-loader-spinner{width:34px;height:34px;border:3px solid rgba(255,255,255,.18);border-top-color:var(--color-red);border-radius:50%;animation:registration-spin .8s linear infinite}
 @keyframes registration-spin{to{transform:rotate(360deg)}}
 .registration-page button:disabled{cursor:wait;opacity:.58}
+
+.receipt-download-button{margin:18px 0 10px}.success-actions #pay-first-installment{background:transparent;border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.9)}.success-actions #pay-first-installment:hover{background:rgba(255,255,255,.08)}
