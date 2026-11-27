@@ -117,4 +117,51 @@ $("#merge-cancel-bottom").addEventListener("click",()=>$("#merge-dialog").close(
 $("#merge-primary").addEventListener("change",e=>document.querySelectorAll("[data-merge-field]").forEach(select=>select.value=e.target.value));
 $("#merge-form").addEventListener("submit",async e=>{e.preventDefault();try{await mergeActiveGroup();}catch(err){alertMsg(err.message);}});
 $("#registration-list").addEventListener("click",async e=>{const part=e.target.closest("[data-parcela]"),cash=e.target.closest("[data-cash]"),btn=part||cash;if(!btn)return;btn.disabled=true;try{if(part)await call("admin_mark_installment_paid",{parcela_id:part.dataset.parcela});else await call("admin_mark_cash_paid",{pagamento_id:cash.dataset.cash});await refresh();alertMsg("Pagamento atualizado com sucesso.");setTimeout(()=>alertMsg(""),3500);}catch(err){alertMsg(err.message);btn.disabled=false;}});
-$("#download-attendance").addEventListener("click",()=>{const JsPDF=window.jspdf?.jsPDF;if(!JsPDF)return alertMsg("Gerador de PDF indisponível.");const doc=new JsPDF({orientation:"landscape",unit:"mm",format:"a4"});const body=rows.map(r=>{const s=summary(r);const pay=r.metodo_pagamento==="carne"?s.paidCount+"/"+s.total+" pagas · "+s.pending+" pendentes":s.paid?"QUITADO":s.paidAmount>0?"PARCIAL":"PENDENTE";return[r.nome_completo,r.telefone,r.email,methodName(r.metodo_pagamento),pay];});doc.setFontSize(16);doc.text("ACAMP 2027 — LISTA DE PARTICIPANTES",14,16);doc.setFontSize(8);doc.text("Emitido em "+new Date().toLocaleString("pt-BR")+" · Total: "+rows.length,14,23);if(doc.autoTable)doc.autoTable({startY:29,head:[["Participante","Telefone","E-mail","Pagamento","Situação atual"]],body,styles:{fontSize:8,cellPadding:3},headStyles:{fillColor:[35,39,35]},alternateRowStyles:{fillColor:[246,245,240]}});doc.save("acamp-2027-lista-de-participantes.pdf");});
+$("#download-attendance").addEventListener("click",()=>{
+ const JsPDF=window.jspdf?.jsPDF;
+ if(!JsPDF){alertMsg("Gerador de PDF indisponível. Atualize a página e tente novamente.");return;}
+ try{
+  const doc=new JsPDF({orientation:"landscape",unit:"mm",format:"a4",compress:true});
+  const pageWidth=doc.internal.pageSize.getWidth(),pageHeight=doc.internal.pageSize.getHeight();
+  const margin=12,columns=[68,32,76,34,63],headers=["Participante","Telefone","E-mail","Pagamento","Situação atual"];
+  const body=rows.map(r=>{
+   const s=summary(r);
+   const pay=r.metodo_pagamento==="carne"?s.paidCount+"/"+s.total+" pagas - "+s.pending+" pendentes":s.paid?"QUITADO":s.paidAmount>0?"PARCIAL":"PENDENTE";
+   return [r.nome_completo||"",r.telefone||"",r.email||"",methodName(r.metodo_pagamento)||"",pay];
+  });
+  let y=margin;
+  const drawHeader=()=>{
+   doc.setFont("helvetica","bold");doc.setFontSize(15);
+   doc.text("ACAMP 2027 - LISTA DE PARTICIPANTES",margin,y+5);
+   doc.setFont("helvetica","normal");doc.setFontSize(8);
+   doc.text("Emitido em "+new Date().toLocaleString("pt-BR")+" | Total: "+body.length,margin,y+11);
+   y+=17;
+   doc.setFillColor(35,39,35);doc.rect(margin,y,pageWidth-margin*2,8,"F");
+   doc.setTextColor(255,255,255);doc.setFont("helvetica","bold");doc.setFontSize(7);
+   let x=margin;
+   headers.forEach((h,i)=>{doc.text(h,x+2,y+5.3);x+=columns[i];});
+   doc.setTextColor(30,30,30);y+=8;
+  };
+  const drawFooter=()=>{
+   doc.setFont("helvetica","normal");doc.setFontSize(7);doc.setTextColor(100,100,100);
+   doc.text("ACAMP 2027 - Lista administrativa",margin,pageHeight-6);
+   doc.text("Página "+doc.internal.getNumberOfPages(),pageWidth-margin,pageHeight-6,{align:"right"});
+  };
+  drawHeader();
+  if(!body.length){doc.setFontSize(9);doc.text("Nenhum participante cadastrado.",margin,y+7);}
+  body.forEach((row,index)=>{
+   doc.setFont("helvetica","normal");doc.setFontSize(7);
+   const cells=row.map((value,i)=>doc.splitTextToSize(String(value),columns[i]-4));
+   const lineCount=Math.max(1,...cells.map(lines=>lines.length));
+   const rowHeight=Math.max(8,lineCount*3.5+3);
+   if(y+rowHeight>pageHeight-13){drawFooter();doc.addPage();y=margin;drawHeader();}
+   if(index%2===1){doc.setFillColor(246,245,240);doc.rect(margin,y,pageWidth-margin*2,rowHeight,"F");}
+   let x=margin;
+   cells.forEach((lines,i)=>{doc.text(lines,x+2,y+4.5);x+=columns[i];});
+   doc.setDrawColor(225,225,220);doc.line(margin,y+rowHeight,pageWidth-margin,y+rowHeight);
+   y+=rowHeight;
+  });
+  drawFooter();
+  doc.save("acamp-2027-lista-de-participantes.pdf");
+ }catch(error){console.error("Falha ao gerar lista PDF:",error);alertMsg("Não foi possível gerar o PDF da lista. Atualize a página e tente novamente.");}
+});
