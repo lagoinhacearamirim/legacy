@@ -99,19 +99,14 @@ async function mergeActiveGroup(){
 function chart(id,type,labels,data,colors){
  if(charts[id])charts[id].destroy();
  if(!window.Chart)return;
+ const safeLabels=(labels||[]).map((label,index)=>String(label||"Não informado"));
+ const safeData=(data||[]).map(value=>Number(value)||0);
  charts[id]=new Chart(document.getElementById(id),{
   type,
-  data:{labels,datasets:[{label:"Participantes",data,backgroundColor:colors||["#b52b2c","#718064","#d5b789","#474d43","#9c9c90","#d9d6ce","#a75e4b","#8a7d6f"],borderWidth:1}]},
+  data:{labels:safeLabels,datasets:[{label:"Participantes",data:safeData,backgroundColor:colors||["#b52b2c","#718064","#d5b789","#474d43","#9c9c90","#d9d6ce","#a75e4b","#8a7d6f"],borderWidth:1}]},
   options:{responsive:true,maintainAspectRatio:false,
    plugins:{legend:{display:true,position:"bottom",labels:{
-    boxWidth:10,usePointStyle:true,color:"#50534c",padding:14,font:{size:11,weight:"600"},
-    generateLabels(chart){
-     const items=Chart.defaults.plugins.legend.labels.generateLabels(chart);
-     if(chart.config.type==="doughnut"||chart.config.type==="pie"){
-      return items.map(item=>({...item,text:String(chart.data.labels[item.index]??"Não informado")+" · "+chart.data.datasets[0].data[item.index]}));
-     }
-     return items.map(item=>({...item,text:(item.text||"Participantes")+" · "+(chart.data.datasets[0].data.reduce((sum,value)=>sum+Number(value||0),0))}));
-    }
+    boxWidth:10,usePointStyle:true,color:"#50534c",padding:14,font:{size:11,weight:"600"}
    }}},
    scales:type==="bar"?{y:{beginAtZero:true,ticks:{precision:0},grid:{color:"#efede7"}},x:{grid:{display:false}}}:{}
   }
