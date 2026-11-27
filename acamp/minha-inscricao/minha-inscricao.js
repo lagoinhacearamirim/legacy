@@ -101,9 +101,12 @@ function renderResult(data){
   body.appendChild(row);
  }
  $("#lookup-results").hidden=false;
+ const latestReceipt=(data.comprovantes||[]).find(item=>Array.isArray(item.installment_ids)&&item.installment_ids.length);
+ const receiptButton=$("#download-installment-receipt");receiptButton.hidden=!latestReceipt;receiptButton.onclick=()=>downloadInstallmentReceipt(data,latestReceipt);
  renderOnlinePayment(data);
 }
 
+function downloadInstallmentReceipt(data,payment){const JsPDF=window.jspdf?.jsPDF;if(!JsPDF)throw new Error("Não foi possível carregar o gerador de PDF.");const part=(data.parcelas||[]).find(item=>payment.installment_ids.includes(item.id)&&item.status==="paga");if(!part)throw new Error("Não encontramos a parcela confirmada para gerar o comprovante.");const doc=new JsPDF({unit:"mm",format:"a4"});doc.setFillColor(25,28,25);doc.rect(0,0,210,48,"F");doc.setTextColor(255,255,255);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("LEGACY / ACAMP 2027",18,17);doc.setFontSize(22);doc.text("COMPROVANTE DE PAGAMENTO",18,32);doc.setTextColor(35,38,34);doc.setFontSize(15);doc.text("PAGAMENTO CONFIRMADO",18,66);const rows=[["Participante",data.inscricao.nome_completo],["Código da inscrição",data.inscricao.codigo_ingresso],["Parcela",part.numero+"ª parcela"],["Vencimento",date(part.vencimento)],["Valor pago",currency(payment.valor_centavos)],["Data da confirmação",date(payment.paid_at)],["Pedido InfinitePay",payment.order_nsu||"—"],["Transação",payment.transaction_nsu||"—"],["Situação","PAGA"]];let y=88;doc.setFontSize(10);rows.forEach(([key,value])=>{doc.setFont("helvetica","bold");doc.text(key+":",18,y);doc.setFont("helvetica","normal");doc.text(String(value??"—"),75,y);y+=12;});doc.setFontSize(9);doc.setTextColor(95,95,95);doc.text("Comprovante gerado pelo sistema de inscrições LEGACY / ACAMP 2027.",18,215);doc.save("comprovante-acamp27-parcela-"+part.numero+".pdf");}
 function showOnlinePaymentMessage(message,isError=false){
  const node=$("#online-payment-message");node.textContent=message;node.hidden=!message;node.classList.toggle("is-error",isError);
 }
@@ -161,7 +164,7 @@ $("#lookup-cpf").addEventListener("input",event=>{
   .replace(/(\d{3})(\d{1,2})$/,"$1-$2");
  event.target.value=value;
 });
-async function performLookup(cpf){
+async function performLookup(cpf,autoReceipt=false){
  $("#lookup-results").hidden=true;$("#online-payment").hidden=true;showMessage("");
  if(!validCpf(cpf)){showMessage("Confira o CPF informado e tente novamente.");return;}
  const button=$("#lookup-submit");button.disabled=true;button.innerHTML="CONSULTANDO...";
@@ -169,6 +172,7 @@ async function performLookup(cpf){
   const result=await callLookup(cpf);
   if(!result.found){showMessage("Não encontramos uma inscrição vinculada a esse CPF. Confira os números digitados ou entre em contato com a equipe do Acamp.");return;}
   renderResult(result);
+  if(autoReceipt){const receipt=(result.comprovantes||[]).find(item=>Array.isArray(item.installment_ids)&&item.installment_ids.some(id=>(result.parcelas||[]).some(part=>part.id===id&&part.status==="paga")));if(receipt){try{downloadInstallmentReceipt(result,receipt);}catch(err){showMessage("Pagamento confirmado. Use o botão para baixar o comprovante: "+(err.message||""),false);}}}
  }catch(error){showMessage(error.message||"Não foi possível consultar sua inscrição. Tente novamente.");}
  finally{button.disabled=false;button.innerHTML='Consultar inscrição <span>↗</span>';}
 }
@@ -182,16 +186,16 @@ async function paymentReturn(){
  const query=new URLSearchParams(location.search);if(query.get("payment_return")!=="1")return;
  const order=query.get("order_nsu"),transaction=query.get("transaction_nsu"),slug=query.get("slug");
  const cpf=sessionStorage.getItem("acamp_online_payment_cpf")||"";
- let returnMessage="",returnError=false;
+ let returnMessage="",returnError=false,result=null;
  try{
   if(!order||!transaction||!slug)throw new Error("Não recebemos todos os dados de retorno da InfinitePay. Consulte sua inscrição novamente.");
-  const result=await apiCall({action:"confirm_payment",order_nsu:order,transaction_nsu:transaction,slug,receipt_url:query.get("receipt_url")||null});
+  result=await apiCall({action:"confirm_payment",order_nsu:order,transaction_nsu:transaction,slug,receipt_url:query.get("receipt_url")||null});
   returnMessage=result.paid?"Pagamento confirmado pela InfinitePay. Sua inscrição foi atualizada.":"O pagamento ainda não foi confirmado pela operadora. Consulte novamente em instantes.";
  }catch(error){returnMessage=error.message||"Não foi possível confirmar o pagamento.";returnError=true;}
  finally{
   history.replaceState({},"",location.pathname);
   sessionStorage.removeItem("acamp_online_payment_cpf");
-  if(cpf){$("#lookup-cpf").value=cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4");await performLookup(cpf);}
+  if(cpf){$("#lookup-cpf").value=cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4");await performLookup(cpf,Boolean(result?.paid));}
   showMessage(returnMessage,returnError);
  }
 }
