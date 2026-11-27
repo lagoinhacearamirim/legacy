@@ -27,7 +27,7 @@ function date(value){
  return new Date(raw).toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
 }
 function methodName(value){
- return ({pix:"Pix",cartao:"Cartão",especie:"Espécie",carne:"Carnê"})[value]||"Pagamento";
+ return ({pix:"Cartão ou Pix (online)",cartao:"Cartão",especie:"Espécie",carne:"Carnê"})[value]||"Pagamento";
 }
 function statusName(status){
  return ({paga:"Paga",pago:"Pago",pendente:"Pendente",aguardando:"Aguardando pagamento",cancelada:"Cancelada",cancelado:"Cancelado",estornado:"Estornado",falhou:"Não confirmado",parcial:"Pagamento parcial"})[status]||"Pendente";
@@ -104,8 +104,45 @@ function renderResult(data){
  const latestReceipt=(data.comprovantes||[]).find(item=>Array.isArray(item.installment_ids)&&item.installment_ids.length);
  const receiptButton=$("#download-installment-receipt");receiptButton.hidden=!latestReceipt;receiptButton.onclick=()=>downloadInstallmentReceipt(data,latestReceipt);
  renderOnlinePayment(data);
+ renderPaymentMethodChange(data);
 }
 
+function renderPaymentMethodChange(data){
+ const box=$("#method-change"),summary=data.resumo||{},inscription=data.inscricao;
+ const pending=Number(summary.pendentes||0);
+ const allPaid=Number(summary.total)>0&&Number(summary.pagas)===Number(summary.total);
+ box.hidden=allPaid||pending<=0||inscription.status==="pago";
+ $("#method-change-options").hidden=true;
+ $("#method-change-message").hidden=true;
+}
+async function changePaymentMethod(method,button){
+ const cpf=digits($("#lookup-cpf").value);
+ if(cpf.length!==11){showMethodChangeMessage("Consulte novamente sua inscrição antes de alterar a modalidade.",true);return;}
+ const buttons=[...document.querySelectorAll("[data-method]")];
+ buttons.forEach(item=>item.disabled=true);
+ button.classList.add("is-loading");
+ showMethodChangeMessage("Atualizando sua modalidade de pagamento. Aguarde.");
+ try{
+  const result=await apiCall({action:"change_payment_method",cpf,method});
+  if(method==="carne"){
+   showMethodChangeMessage("Pronto! Sua inscrição agora está no carnê, dividido em 3 parcelas.");
+   await performLookup(cpf);
+   showMethodChangeMessage("Sua modalidade foi alterada para carnê. As 3 parcelas já estão disponíveis.");
+   return;
+  }
+  sessionStorage.setItem("acamp_online_payment_cpf",cpf);
+  const checkout=await apiCall({action:"create_online_payment",cpf,payment_option:"full"});
+  if(!checkout.checkout_url)throw new Error("A InfinitePay não retornou o link de pagamento.");
+  location.assign(checkout.checkout_url);
+ }catch(error){
+  showMethodChangeMessage(error.message||"Não foi possível alterar a modalidade. Tente novamente.",true);
+  buttons.forEach(item=>item.disabled=false);
+  button.classList.remove("is-loading");
+ }
+}
+function showMethodChangeMessage(message,isError=false){
+ const node=$("#method-change-message");node.textContent=message;node.hidden=!message;node.classList.toggle("is-error",isError);
+}
 function downloadInstallmentReceipt(data,payment){const JsPDF=window.jspdf?.jsPDF;if(!JsPDF)throw new Error("Não foi possível carregar o gerador de PDF.");const part=(data.parcelas||[]).find(item=>payment.installment_ids.includes(item.id)&&item.status==="paga");if(!part)throw new Error("Não encontramos a parcela confirmada para gerar o comprovante.");const doc=new JsPDF({unit:"mm",format:"a4"});doc.setFillColor(25,28,25);doc.rect(0,0,210,48,"F");doc.setTextColor(255,255,255);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.text("LEGACY / ACAMP 2027",18,17);doc.setFontSize(22);doc.text("COMPROVANTE DE PAGAMENTO",18,32);doc.setTextColor(35,38,34);doc.setFontSize(15);doc.text("PAGAMENTO CONFIRMADO",18,66);const rows=[["Participante",data.inscricao.nome_completo],["Código da inscrição",data.inscricao.codigo_ingresso],["Parcela",part.numero+"ª parcela"],["Vencimento",date(part.vencimento)],["Valor pago",currency(payment.valor_centavos)],["Data da confirmação",date(payment.paid_at)],["Pedido InfinitePay",payment.order_nsu||"—"],["Transação",payment.transaction_nsu||"—"],["Situação","PAGA"]];let y=88;doc.setFontSize(10);rows.forEach(([key,value])=>{doc.setFont("helvetica","bold");doc.text(key+":",18,y);doc.setFont("helvetica","normal");doc.text(String(value??"—"),75,y);y+=12;});doc.setFontSize(9);doc.setTextColor(95,95,95);doc.text("Comprovante gerado pelo sistema de inscrições LEGACY / ACAMP 2027.",18,215);doc.save("comprovante-acamp27-parcela-"+part.numero+".pdf");}
 function showOnlinePaymentMessage(message,isError=false){
  const node=$("#online-payment-message");node.textContent=message;node.hidden=!message;node.classList.toggle("is-error",isError);
@@ -178,6 +215,11 @@ async function performLookup(cpf,autoReceipt=false){
 }
 $("#lookup-form").addEventListener("submit",async event=>{event.preventDefault();await performLookup(digits($("#lookup-cpf").value));});
 $("#online-pay-toggle").addEventListener("click",()=>{$("#online-pay-options").hidden=!$("#online-pay-options").hidden;});
+$("#method-change-toggle").addEventListener("click",()=>{$("#method-change-options").hidden=!$("#method-change-options").hidden;});
+$("#method-change-options").addEventListener("click",event=>{
+ const button=event.target.closest("[data-method]");if(!button)return;
+ changePaymentMethod(button.dataset.method,button);
+});
 $("#payment-options").addEventListener("click",event=>{
  const button=event.target.closest("[data-pay-option]");if(!button)return;
  button.dataset.originalLabel=button.innerHTML;startOnlinePayment(button.dataset.payOption,button);
